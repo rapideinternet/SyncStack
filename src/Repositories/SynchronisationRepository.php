@@ -26,4 +26,25 @@ class SynchronisationRepository
     public function lastBatch(): Collection {
         return $this->builder()->where('batch', $this->builder()->max('batch'))->get();
     }
+
+    public function byBatch(int $batch): Collection {
+        return $this->builder()->where('batch', $batch)->get();
+    }
+
+    public function byPathLike(string $path): Collection {
+        $builder = $this->builder();
+        $escapedPath = strtr($path, [
+            '!' => '!!',
+            '%' => '!%',
+            '_' => '!_',
+        ]);
+        $operator = $builder->getModel()->getConnection()->getDriverName() === 'pgsql'
+            ? 'ILIKE'
+            : 'LIKE';
+        $column = $builder->getQuery()->getGrammar()->wrap('path');
+
+        return $builder
+            ->whereRaw($column.' '.$operator." ? ESCAPE '!'", ['%'.$escapedPath.'%'])
+            ->get();
+    }
 }
