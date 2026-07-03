@@ -55,7 +55,9 @@ Undo the most recent batch of syncs:
 ```bash
 php artisan sync:rollback --location=Synchronisations
 ```
-- Only the latest batch is rolled back; earlier batches stay intact.
+- By default only the latest batch is rolled back; earlier batches stay intact.
+- Use `--batch=x` to rollback a specific batch number.
+- Use `--path=x` to rollback using a like match on the path name, so partial paths are also allowed. Use with care!
 - Use `--continueOnFailure` to attempt the rest even if one rollback fails.
 
 ## License
