@@ -49,6 +49,7 @@ php artisan sync:run --location=Synchronisations
 ```
 - Files are discovered recursively under `--location` and keyed by their path in the `synchronisations` table.
 - Each run uses the next batch number; `--continueOnFailure` keeps going after an error.
+- You can pass --fake to register (a) synchronisation(s) as run without actually running it. Spinning up new databases in multi DB is a usecase for this. 
 
 ## Rolling back
 Undo the most recent batch of syncs:
